@@ -22,7 +22,7 @@ GLuint SSBO;
 float Zoom = 500.0f;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
-float playerSpeed = 100.0f;
+float playerSpeed = 10.0f;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
@@ -57,7 +57,7 @@ std::vector<glm::mat4> transforms;
 
 void CreateQuad(const Transform& t, float width, float height, float Sprite_Width, float Sprite_height)
 {
-	float x = 2, y = 4;
+	float x = 3, y = 4;
 	float sheet_Width = 260.0f, sheet_height = 261.0f;
 
 	Vertex v0;
@@ -198,10 +198,29 @@ void processInput(GLFWwindow* window)
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
 
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+	{
+		transform.position.y += playerSpeed * deltaTime;
+	}
+		
+
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+	{
+		transform.position.y -= playerSpeed * deltaTime;
+	}
+		
+
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+	{
+		transform.position.x -= playerSpeed * deltaTime;
+	}
+		
+
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 	{
-		transform.position.x += 10.0f;
-		std::cout << transform.position.x << " \n";
+		transform.position.x += playerSpeed * deltaTime;
 	}
+		
+	transforms[0] = transform.to_mat4();
 }
 
