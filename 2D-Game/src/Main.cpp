@@ -17,13 +17,15 @@ int Screen_width = 1920;
 int Screen_Height = 1080;
 
 unsigned int VBO, VAO, EBO;
+GLuint SSBO;
 
 float Zoom = 500.0f;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
-float playerSpeed = 1.0f;
+float playerSpeed = 100.0f;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void processInput(GLFWwindow* window);
 
 extern "C" {
 	__declspec(dllexport) uint32_t NvOptimusEnablement = 1;
@@ -125,7 +127,6 @@ int main() {
 	Transform t;
 	CreateQuad(t, 1.0f, 1.0f, 65.0f, 65.0f);
 
-	GLuint SSBO;
 	glGenBuffers(1, &SSBO);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, SSBO);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, vertices.size() * sizeof(Vertex), NULL, GL_DYNAMIC_DRAW);
@@ -134,6 +135,9 @@ int main() {
 
 	while (!glfwWindowShouldClose(window))
 	{		
+		//Inputs
+		processInput(window);
+
 		//Render
 		glClearColor(0.1f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -173,9 +177,9 @@ int main() {
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 
-		glfwSwapBuffers(window);
 		glfwPollEvents();
-
+		glfwSwapBuffers(window);
+		
 	}
 
 	glfwTerminate();
@@ -193,4 +197,11 @@ void processInput(GLFWwindow* window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
+
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+	{
+		transform.position.x += 10.0f;
+		std::cout << transform.position.x << " \n";
+	}
 }
+
