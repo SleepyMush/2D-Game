@@ -28,5 +28,15 @@
   <ItemGroup>
     <None Include="Resource\Shaders\Main-Shader.vert" />
     <None Include="Resource\Shaders\Main-Shader.frag" />
+    <None Include="Resource\Shaders\Text-Render.vert" />
+    <None Include="Resource\Shaders\Text-Render.frag" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Resource\Fonts\PressStart2P-Regular.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Libraries\include\ft2build.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
