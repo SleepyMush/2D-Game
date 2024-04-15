@@ -260,7 +260,7 @@ int main() {
 	CreateQuad(t, 1.0f, 1.0f, 65.0f, 65.0f);
 
 	while (!glfwWindowShouldClose(window))
-	{		
+	{
 		//Inputs
 		processInput(window);
 
@@ -303,13 +303,19 @@ int main() {
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 
+		left = 0;
+		right = Screen_width;
+		bottom = 0;
+		top = Screen_Height;
+		projection = glm::ortho(left, right, bottom, top, -1.0f, 1.0f);
+
 		Text_Render.use();
 		Text_Render.setMat4("projection", projection);
-		RenderText(Text_Render, "Hello There", 0.0f, 0.0f, 10.0f, glm::vec3(0.2, 0.5f, 0.6f));
+		RenderText(Text_Render, "Hello There", 0.0f, 5.0f, 5.0f, glm::vec3(0.2, 0.5f, 0.6f));
 
 		glfwPollEvents();
 		glfwSwapBuffers(window);
-		
+
 	}
 
 	glfwTerminate();
@@ -332,25 +338,25 @@ void processInput(GLFWwindow* window)
 	{
 		transform.position.y += playerSpeed * deltaTime;
 	}
-		
+
 
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 	{
 		transform.position.y -= playerSpeed * deltaTime;
 	}
-		
+
 
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 	{
 		transform.position.x -= playerSpeed * deltaTime;
 	}
-		
+
 
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 	{
 		transform.position.x += playerSpeed * deltaTime;
 	}
-		
+
 	transforms[0] = transform.to_mat4();
 }
 
@@ -386,8 +392,7 @@ void RenderText(Shader& shader, std::string text, float x, float y, float scale,
 			float xpos = x + ch.Bearing.x * scale;
 			float ypos = y - (256 - ch.Bearing.y) * scale;
 
-			//T[workingIndex] = glm::translate(glm::mat4(1.0f), glm::vec3(xpos, ypos, 0)) * glm::scale(glm::mat4(1.0f), glm::vec3(256 * scale, 256 * scale, 0));
-			T[workingIndex] = glm::translate(glm::mat4(1.0f), glm::vec3(xpos, ypos, 0));
+			T[workingIndex] = glm::translate(glm::mat4(1.0f), glm::vec3(xpos, ypos, 0)) * glm::scale(glm::mat4(1.0f), glm::vec3(256 * scale, 256 * scale, 0));
 			letterMap[workingIndex] = ch.TextureID;
 
 			// now advance cursors for next glyph (note that advance is number of 1/64 pixels)
@@ -461,6 +466,3 @@ void glDebugOutput(GLenum source, GLenum type, unsigned int id, GLenum severity,
 	std::cout << std::endl;
 
 }
-
-
-
